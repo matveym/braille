@@ -79,20 +79,46 @@ SVG = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 def letter(char, posx, posy):
     CHARS = {
-        u"А": [(0, 0)],
-        u"Б": [(0, 0), (1, 0)],
-        u"П": [(0, 0), (0, 1), (1, 0), (2, 0)],
-        u"Р": [(0, 0), (1, 0), (1, 1), (2, 0)],
-        u"И": [(0, 1), (1, 0)],
-        u"В": [(0, 1), (1, 0), (1, 1), (2, 1)],
-        u"Е": [(0, 0), (1, 1)],
-        u"Т": [(0, 1), (1, 0), (1, 1), (2, 0)],
+        u"А": [
+                (1, 0),
+                (0, 0),
+                (0, 0)],
+        u"Б": [
+                (1, 0), 
+                (1, 0),
+                (0, 0)],
+        u"П": [
+                (1, 1), 
+                (1, 0), 
+                (1, 0)],
+        u"Р": [
+                (1, 0), 
+                (1, 1), 
+                (1, 0)],
+        u"И": [
+                (0, 1), 
+                (1, 0),
+                (0, 0)],
+        u"В": [
+                (0, 1), 
+                (1, 1), 
+                (0, 1)],
+        u"Е": [
+                (1, 0), 
+                (0, 1),
+                (0, 0)],
+        u"Т": [
+                (0, 1), 
+                (1, 1), 
+                (1, 0)],
     }
 
     points = CHARS[char.upper()]
     svg = ""
-    for irow, icol in points:
-        svg += point(posx, posy, irow, icol)
+    for irow, columns in enumerate(points):
+        for icol, exists in enumerate(columns):
+            if exists:
+                svg += point(posx, posy, irow, icol)
     return svg
 
 
@@ -105,7 +131,7 @@ def text(s):
     body = ""
     posx, posy = START_X, START_Y
     for word in s.split():
-        for col, char in enumerate(word):
+        for char in word:
             body += letter(char, posx, posy)
             posx += LETTER_INTERVAL
         posx += WORD_INTERVAL
@@ -113,4 +139,4 @@ def text(s):
 
 
 if __name__ == "__main__":
-    print text(u'головний бухгалтер')
+    print text(u'привет')
