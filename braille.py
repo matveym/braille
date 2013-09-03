@@ -1,29 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-def x(col):
-    return 17.455055 + col * 31.97757
-
-
-def y(row):
-    assert row == 0, "handle rows"
-    return 19.955212
-
-
-def rect(row, col):
-    RECT_STR = """
-    <rect
-       style="fill:none;stroke:#373435;stroke-width:0.70866126"
-       height="28.346407"
-       width="15.944846"
-       y="%(y)s"
-       x="%(x)s"
-       class="fil3 str1" />
-"""
-    return RECT_STR % dict(x=x(col), y=y(row))
-
-
-def point(row, col, irow, icol):
+def point(posx, posy, irow, icol):
     POINT_STR = """
     <path
        style="fill:#373435;fill-rule:evenodd;stroke:#373435;stroke-width:0.26999927"
@@ -33,11 +11,11 @@ def point(row, col, irow, icol):
 """
     def ix():
         assert icol >= 0 and icol <= 1, "Invalid inner column: %s" % icol
-        return x(col) + 2.657487 + icol * 10.62974
+        return posx + 2.657487 + icol * 10.62974
 
     def iy():
-        assert row >= 0 and row <= 2, "Invalid inner row: %s" % row
-        return y(row) + irow * 11.51673
+        assert irow >= 0 and irow <= 2, "Invalid inner row: %s" % row
+        return posy + irow * 11.51673
     return POINT_STR % dict(x=ix(), y=iy())
 
 
@@ -99,7 +77,7 @@ SVG = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 </svg>
 """
 
-def letter(char, row, col):
+def letter(char, posx, posy):
     CHARS = {
         u"А": [(0, 0)],
         u"Б": [(0, 0), (1, 0)],
@@ -114,17 +92,25 @@ def letter(char, row, col):
     points = CHARS[char.upper()]
     svg = ""
     for irow, icol in points:
-        svg += point(row, col, irow, icol)
-    svg += rect(row, col)
+        svg += point(posx, posy, irow, icol)
     return svg
 
 
+START_X = 68.501325
+START_Y = 74.513512
+LETTER_INTERVAL = 23.03269
+WORD_INTERVAL = 38.97373
+
 def text(s):
     body = ""
-    for col, char in enumerate(s):
-        body += letter(char, 0, col)
+    posx, posy = START_X, START_Y
+    for word in s.split():
+        for col, char in enumerate(word):
+            body += letter(char, posx, posy)
+            posx += LETTER_INTERVAL
+        posx += WORD_INTERVAL
     return SVG % dict(body=body)
 
 
 if __name__ == "__main__":
-    print text(u'привет')
+    print text(u'головний бухгалтер')
