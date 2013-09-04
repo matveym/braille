@@ -333,17 +333,21 @@ START_X = 68.501325
 START_Y = 74.513512
 LETTER_INTERVAL = 23.03269
 WORD_INTERVAL = 38.97373
+LINE_INTERVAL = 46.03843
 
 def text(s):
     body = ""
     posx, posy = START_X, START_Y
-    for word in s.split():
-        for char in word:
-            body += letter(char, posx, posy)
-            posx += LETTER_INTERVAL
-        posx += WORD_INTERVAL
+    for line in s.splitlines():
+        for word in line.split():
+            for char in word:
+                body += letter(char, posx, posy)
+                posx += LETTER_INTERVAL
+            posx += WORD_INTERVAL
+        posy += LINE_INTERVAL
+        posx = START_X
     return SVG % dict(body=body)
 
 
 if __name__ == "__main__":
-    print text(u'привет')
+    print text(u'барвінківський районний\nтериторіальний центр')
