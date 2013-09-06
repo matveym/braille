@@ -1,5 +1,3 @@
-import urllib
-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -17,8 +15,8 @@ def svg(request):
     svg_text = renderer.text(text)
 
     response = HttpResponse(svg_text, content_type="image/svg+xml")
-    # content_disposition = 'attachment; filename=image.svg'
-    content_disposition = "attachment; filename*=UTF-8''%s.svg" % _filename(text)
+    content_disposition = 'attachment; filename=image.svg'
+    # content_disposition = 'attachment; filename=%s.svg' % _filename(text))
     response['Content-Disposition'] = content_disposition
     response['Content-Length'] = len(svg_text)
     return response
@@ -26,4 +24,4 @@ def svg(request):
 def _filename(text):
     result = text.replace('\r\n', ' ').replace('\r', ' ').replace('\n', ' ')
     result = result[:20]
-    return urllib.quote(result.encode('utf8'))
+    return result
