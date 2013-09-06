@@ -16,12 +16,6 @@ def svg(request):
 
     response = HttpResponse(svg_text, content_type="image/svg+xml")
     content_disposition = 'attachment; filename=image.svg'
-    # content_disposition = 'attachment; filename=%s.svg' % _filename(text))
     response['Content-Disposition'] = content_disposition
     response['Content-Length'] = len(svg_text)
     return response
-
-def _filename(text):
-    result = text.replace('\r\n', ' ').replace('\r', ' ').replace('\n', ' ')
-    result = result[:20]
-    return result
