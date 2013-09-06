@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 
 
 def point(posx, posy, irow, icol):
@@ -78,6 +79,10 @@ SVG = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 """
 
 def letter(char, posx, posy):
+    DIGIT_START = [
+                (0, 1), 
+                (0, 1), 
+                (1, 1)]
     CHARS = {
         u"А": [
                 (1, 0),
@@ -313,12 +318,9 @@ def letter(char, posx, posy):
                 (0, 1), 
                 (1, 1), 
                 (0, 0)],
+        u"^": DIGIT_START
     }
 
-    DIGIT_START = [
-                (0, 1), 
-                (0, 1), 
-                (1, 1)]
 
     points = CHARS[char.upper()]
     svg = ""
@@ -339,6 +341,7 @@ def text(s):
     body = ""
     posx, posy = START_X, START_Y
     for line in s.splitlines():
+        line = digit_prefix(line)
         for word in line.split():
             for char in word:
                 body += letter(char, posx, posy)
@@ -349,5 +352,11 @@ def text(s):
     return SVG % dict(body=body)
 
 
+def digit_prefix(text):
+    assert text.find('^') == -1, text
+    return re.sub(r'(\d+)', r'^\1', text)
+
+
 if __name__ == "__main__":
-    print text(u'барвінківський районний\nтериторіальний центр')
+    # print text(u'барвінківський районний\nтериторіальний центр')
+    print text(u'123')
