@@ -7,7 +7,7 @@ START_Y = 30
 POINT_INTERVAL = 2 + 1.5
 LETTER_INTERVAL = 5 + 1.5
 WORD_INTERVAL = 6.5
-LINE_INTERVAL = 5
+LINE_INTERVAL = 0.75 + 2 + 1.5 + 2 + 1.5 + 5 + 0.75
 
 
 def point(posx, posy, irow, icol):
@@ -308,6 +308,6 @@ def digit_prefix(text):
 
 
 if __name__ == "__main__":
-    # print text(u'барвінківський районний\nтериторіальний центр')
-    print text(u'барвінківський районний')
+    print text(u'барвінківський районний\nтериторіальний центр')
+    # print text(u'барвінківський районний')
     # print text(u'барв')
